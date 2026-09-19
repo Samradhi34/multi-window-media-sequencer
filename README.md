@@ -1,37 +1,53 @@
 # Multi-Window Media Sequencer
 
-**Live Demo:** https://multi-window-media-sequencer.viex.onrender.com
+**Live Demo:** [https://multi-window-media-sequencer-viex.onrender.com](https://multi-window-media-sequencer-viex.onrender.com)  
+**GitHub Repository:** [https://github.com/Samradhi34/multi-window-media-sequencer](https://github.com/Samradhi34/multi-window-media-sequencer)
 
-A full-stack web application for managing and playing media content across multiple display screens. It lets you control what image or video plays on each screen, set up playlists per screen, and broadcast a single piece of media to all screens at once — all from one dashboard.
+A full-stack web application for managing, sequencing, and playing media content across multiple independent display screens. It allows operators to control what images or videos play on each screen, configure custom sequential playlists per display window, adjust media durations, add or delete display windows, and broadcast synchronized global media across all screens simultaneously — all from a single unified dark-mode dashboard.
 
 ---
 
 ## Overview
 
-The application is built for scenarios where you have multiple display screens (like in a store, airport, or lobby) and you want to manage what plays on each one. You can:
+The application is built for multi-screen environments (retail storefronts, airports, event centers, corporate lobbies) requiring dynamic sequencing:
 
-- See all screens live in a preview dashboard
-- Build a playlist for each screen with images and videos
-- Trigger a synchronized broadcast that overrides all screens with the same media at the same time
-- Add or delete display windows dynamically
-- Manage a shared media catalog that all windows can use
-
-The frontend and backend communicate over REST API for actions (like adding media), and over WebSocket for real-time updates (like which media is currently playing and how much time is left).
+- **Live Preview Dashboard:** Real-time visual monitoring of all active display windows, showing current playing media, remaining time, and progress bars.
+- **Dynamic Display Window Management:** Create new display windows on-the-fly with custom names and optional descriptions. Easily delete display windows with one click directly from the live preview cards.
+- **Per-Window Playlist Sequencing:** Assign images, videos, and blank screen placeholders to specific windows. Reorder items, adjust playback durations, and remove media from playlists.
+- **Global Synchronized Broadcast:** Instantly broadcast a high-priority media asset across all display windows simultaneously, overriding individual loops with live countdown timers.
+- **Media Catalog Management:** Centralized repository for uploading and organizing video, image, and blank assets with strict URL and media-type validation.
+- **Stateless Mathematical Timing Engine:** Calculates exact media playback offsets based on a continuous 5-hour cycle, eliminating unnecessary database write locks.
+- **Real-Time WebSocket Sync:** Broadcasts second-by-second playback status to clients over STOMP WebSockets with automatic REST polling fallback.
 
 ---
 
 ## Key Features
 
-- Live preview of all display windows with real-time playback status
-- Playlist management per display window — add, remove, and reorder items
-- Synchronized global broadcast — push one media item to all screens simultaneously
-- Dynamic display window creation and deletion
-- Shared media catalog supporting IMAGE, VIDEO, and BLANK media types
-- URL format validation — prevents saving a video URL under an IMAGE type and vice versa
-- Playback calculated from current time within a 5-hour rolling cycle (no database writes required for tracking which item is playing)
-- Real-time updates via WebSocket (STOMP protocol) with HTTP polling as fallback
-- Docker support for single-container production deployment
-- Configured for deployment on Koyeb and Render
+### 🖥️ Display Windows Management
+- **Add Display Windows:** Create unlimited display windows with custom names and optional location/description fields.
+- **Delete Display Windows:** Delete any display window directly from its preview header with safe confirmation and automatic playlist cleanup.
+- **Full-Screen Focus:** Expand any individual display window or the entire multi-window grid into full-screen mode.
+
+### 📋 Window Playlists & Sequencing
+- **Add to Playlist:** Assign media assets from the central catalog to any display window's active queue.
+- **Remove from Playlist:** Remove individual media items from a window's playlist at any time.
+- **Edit Item Durations:** Customize playback durations per playlist item with real-time recalculation.
+- **Reorder Queue:** Move playlist items up or down to configure exact display playback sequences.
+
+### ⚡ Global Sync Broadcast
+- **Instant Synchronization:** Broadcast a selected media item across all display windows simultaneously.
+- **Live Countdown Timer:** Displays remaining broadcast seconds across all screens.
+- **Seamless Return:** Automatically restores each window's individual sequence when the sync broadcast completes or is cancelled.
+
+### 📁 Media Catalog
+- **Multi-Format Support:** Supports HD videos (MP4, WebM, YouTube, Vimeo), high-res images (JPEG, PNG, WebP), and black screen placeholders.
+- **Asset CRUD:** Add new media items, edit default durations, and delete assets with cascade safety.
+- **Format Validation:** Ensures URLs and media types match properly.
+
+### 🚀 Resilience & Real-Time Sync
+- **STOMP WebSockets:** Real-time 1-second state broadcasts over `/topic/playback` and `/topic/sync`.
+- **Cold-Start Resilience:** Built-in automatic API retry logic that absorbs cloud container boot delays.
+- **Clean Responsive Dashboard:** Modern dark UI without clutter or duplicate shortcuts.
 
 ---
 
@@ -364,7 +380,7 @@ docker run -p 8080:8080 \
 
 The application is deployed and live on Render:
 
-**Live URL:** https://multi-window-media-sequencer.viex.onrender.com
+**Live URL:** https://multi-window-media-sequencer-viex.onrender.com
 
 To deploy your own instance:
 

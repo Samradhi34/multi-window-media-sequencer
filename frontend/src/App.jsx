@@ -9,7 +9,6 @@ import MediaLibrarySection from './components/MediaLibrarySection';
 import WindowPlaylistsSection from './components/WindowPlaylistsSection';
 import WindowSettingsSection from './components/WindowSettingsSection';
 import AnalyticsSection from './components/AnalyticsSection';
-import QuickActionsRow from './components/QuickActionsRow';
 import Footer from './components/Footer';
 import AddMediaModal from './components/AddMediaModal';
 import AddWindowModal from './components/AddWindowModal';
@@ -339,12 +338,6 @@ export default function App() {
                   <RecentActivityPanel activityLogs={activityLogs} />
                 </div>
               </div>
-
-              <QuickActionsRow
-                onOpenAddMediaModal={handleOpenAddMediaModal}
-                setActiveTab={setActiveTab}
-                onScrollToSync={handleScrollToSync}
-              />
             </>
           )}
 

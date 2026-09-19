@@ -21,14 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    /**
-     * Centralized exception handler generating standard custom responses using GenericResponseHandlers.
-     *
-     * @param request   the current HTTP request
-     * @param exception the thrown exception or error
-     * @return ResponseEntity containing standardized response format
-     */
+	
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<Object> handleControllerException(final HttpServletRequest request, final Throwable exception) {
         HttpStatus status;

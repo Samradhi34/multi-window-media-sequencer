@@ -92,7 +92,6 @@ public class DisplayWindowServiceImpl implements DisplayWindowService {
         DisplayWindow window = getWindowById(windowId);
         SyncStatusResponse syncStatus = syncService.getCurrentSyncStatus();
 
-        // Check if global sync is active
         if (syncStatus.isActive()) {
             log.debug("Global sync is active. Returning sync media override for window ID: {}", windowId);
             MediaItem syncMedia = syncStatus.getActiveMediaItem();
@@ -155,14 +154,12 @@ public class DisplayWindowServiceImpl implements DisplayWindowService {
 
         long currentTimeSeconds = System.currentTimeMillis() / 1000;
         
-        // Calculate position within 5-hour operational cycle
         long cycleTimeSeconds = currentTimeSeconds % FIVE_HOURS_IN_SECONDS;
         int playlistOffsetSeconds = (int) (cycleTimeSeconds % totalPlaylistDuration);
 
         log.debug("Window ID: {} -> Total playlist duration: {}s, Current 5-hr cycle offset: {}s, Playlist loop offset: {}s",
                 windowId, totalPlaylistDuration, cycleTimeSeconds, playlistOffsetSeconds);
 
-        // Find active media item based on playlist offset
         int accumulatedSeconds = 0;
         MediaItem activeMedia = null;
         int elapsedInItem = 0;
@@ -296,7 +293,6 @@ public class DisplayWindowServiceImpl implements DisplayWindowService {
 
         playlistItemRepository.deleteByDisplayWindowIdAndMediaItemId(window.getId(), mediaId);
 
-        // Re-index remaining playlist items to ensure contiguous sequence order
         List<PlaylistItem> remainingItems = playlistItemRepository.findByDisplayWindowIdOrderBySequenceOrderAsc(windowId);
         for (int i = 0; i < remainingItems.size(); i++) {
             PlaylistItem item = remainingItems.get(i);

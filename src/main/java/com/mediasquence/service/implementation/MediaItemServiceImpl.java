@@ -61,7 +61,6 @@ public class MediaItemServiceImpl implements MediaItemService {
             throw new IllegalArgumentException("CreateMediaRequest payload cannot be null");
         }
 
-        // Validation: URL requirement for VIDEO / IMAGE
         if ((request.getMediaType() == MediaType.VIDEO || request.getMediaType() == MediaType.IMAGE)
                 && !StringUtils.hasText(request.getUrl())) {
             log.warn("Validation failed: URL is required for {} media type", request.getMediaType());
@@ -91,7 +90,6 @@ public class MediaItemServiceImpl implements MediaItemService {
             }
         }
 
-        // Map DTO to Entity using MediaMapper
         MediaItem mediaItem = mediaMapper.dtoToEntity(request);
         MediaItem savedItem = mediaItemRepository.save(mediaItem);
 
@@ -119,17 +117,14 @@ public class MediaItemServiceImpl implements MediaItemService {
     public void deleteMediaItem(Long id) {
         MediaItem mediaItem = getMediaItemById(id);
 
-        // 1. Delete dependent foreign key records in sync_state and playlist_items using JPQL bulk queries
         syncStateRepository.deleteByActiveMediaItemId(id);
         playlistItemRepository.deleteByMediaItemId(id);
 
-        // 2. Flush and clear persistence context to sync database state before deleting media_items entity
         if (entityManager != null) {
             entityManager.flush();
             entityManager.clear();
         }
 
-        // 3. Delete media item entity and flush immediately
         mediaItemRepository.deleteById(id);
         mediaItemRepository.flush();
 

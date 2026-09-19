@@ -31,7 +31,6 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void executeSchemaFixes() {
-        // Ensure PostgreSQL table column for url is TEXT type to support local file Data URLs
         try {
             jdbcTemplate.execute("ALTER TABLE media_items ALTER COLUMN url TYPE TEXT");
             log.info("Ensured PostgreSQL column 'url' in 'media_items' is TEXT type.");
@@ -39,7 +38,6 @@ public class DataInitializer implements CommandLineRunner {
             log.debug("Notice: Unable to alter column url to TEXT (table may not exist yet or already altered): {}", e.getMessage());
         }
 
-        // Drop any rigid legacy foreign key constraints on sync_state to allow CASCADE deletes
         try {
             jdbcTemplate.execute("ALTER TABLE sync_state DROP CONSTRAINT IF EXISTS fk4dtgfp71g8t5n56kae9yklk58");
             log.info("Cleared restrictive legacy FK constraint fk4dtgfp71g8t5n56kae9yklk58 on sync_state.");
@@ -50,7 +48,6 @@ public class DataInitializer implements CommandLineRunner {
 
     @Transactional
     public void seedDataIfNecessary() {
-        // Auto-fix any legacy records using deprecated Google Cloud Storage sample URLs
         mediaItemRepository.findAll().forEach(item -> {
             if (item.getUrl() != null && item.getUrl().contains("commondatastorage.googleapis.com")) {
                 if (item.getTitle().contains("Ocean")) {
@@ -72,7 +69,6 @@ public class DataInitializer implements CommandLineRunner {
 
         log.info("Seeding initial display windows and media catalog matching design reference...");
 
-        // 1. Media Catalog Creation (Matching Reference Screenshots with working URLs)
         MediaItem m1 = mediaItemRepository.save(new MediaItem(
                 "M1 - Travel.jpg",
                 MediaType.IMAGE,
@@ -141,20 +137,16 @@ public class DataInitializer implements CommandLineRunner {
         DisplayWindow window3 = displayWindowRepository.findByName("Window 3").orElseGet(() ->
                 displayWindowRepository.save(new DisplayWindow("Window 3", "Internal customer lobby feature screen")));
 
-        // 3. Playlist Assignments (Matching Reference Design)
-        // Window 1: M1 -> M5 -> M6 -> Blank
         addPlaylistItem(window1, m1, 1);
         addPlaylistItem(window1, m5, 2);
         addPlaylistItem(window1, m6, 3);
         addPlaylistItem(window1, m8, 4);
 
-        // Window 2: M2 -> M4 -> M7 -> Blank
         addPlaylistItem(window2, m2, 1);
         addPlaylistItem(window2, m4, 2);
         addPlaylistItem(window2, m7, 3);
         addPlaylistItem(window2, m8, 4);
 
-        // Window 3: M3 -> M2 -> M1 -> Blank
         addPlaylistItem(window3, m3, 1);
         addPlaylistItem(window3, m2, 2);
         addPlaylistItem(window3, m1, 3);

@@ -1,23 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus, mediaCatalog = [] }) {
-  const [videoSrc, setVideoSrc] = useState(url);
-  const [hasError, setHasError] = useState(false);
-  const [isCardFullscreen, setIsCardFullscreen] = useState(false);
-  const cardRef = useRef(null);
-
+const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus = {}, mediaCatalog = [] }) {
   const {
     windowName,
     activeMediaItem,
     elapsedSecondsInMedia = 0,
     remainingSecondsInMedia = 0,
     isSyncActive
-  } = windowStatus;
+  } = windowStatus || {};
 
   const catalogMatch = mediaCatalog.find((m) => String(m.id) === String(activeMediaItem?.id));
   const mediaType = activeMediaItem?.mediaType || catalogMatch?.mediaType || 'BLANK';
   const title = activeMediaItem?.title || catalogMatch?.title || 'Blank Screen';
   const url = activeMediaItem?.url || catalogMatch?.url;
+
+  const [videoSrc, setVideoSrc] = useState(url);
+  const [hasError, setHasError] = useState(false);
+  const [isCardFullscreen, setIsCardFullscreen] = useState(false);
+  const cardRef = useRef(null);
+
   const durationSeconds = isSyncActive
     ? (elapsedSecondsInMedia + remainingSecondsInMedia || activeMediaItem?.durationSeconds || 30)
     : (activeMediaItem?.durationSeconds || 30);

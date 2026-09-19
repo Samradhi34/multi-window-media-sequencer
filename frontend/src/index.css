@@ -1421,22 +1421,38 @@ body {
 
 /* Window Settings Card */
 .settings-form-body {
-  padding: 0.75rem;
+  padding: 0.75rem 0.85rem;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
   flex: 1;
+  overflow-y: auto;
+  max-height: 380px;
 }
 
 .settings-field-group {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.25rem;
 }
 
-.settings-field-group label {
-  font-size: 0.7rem;
+.label-with-helper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.settings-field-group label,
+.toggle-label {
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.setting-helper-text {
+  font-size: 0.65rem;
   color: var(--text-sub);
+  line-height: 1.3;
 }
 
 .settings-input,
@@ -1448,25 +1464,29 @@ body {
   border-radius: var(--radius-sm);
   font-size: 0.75rem;
   outline: none;
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+
+.settings-select:focus {
+  border-color: var(--accent-blue);
 }
 
 .settings-toggle-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.75rem;
   padding: 0.2rem 0;
-}
-
-.toggle-label {
-  font-size: 0.725rem;
-  color: var(--text-main);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .toggle-switch {
   position: relative;
   display: inline-block;
-  width: 34px;
-  height: 18px;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .toggle-switch input {
@@ -1480,24 +1500,26 @@ body {
   cursor: pointer;
   inset: 0;
   background-color: #1b2944;
-  transition: 0.3s;
-  border-radius: 18px;
+  transition: 0.25s ease;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
 }
 
 .toggle-slider:before {
   position: absolute;
   content: "";
-  height: 12px;
-  width: 12px;
-  left: 3px;
-  bottom: 3px;
+  height: 14px;
+  width: 14px;
+  left: 2px;
+  bottom: 2px;
   background-color: white;
-  transition: 0.3s;
+  transition: 0.25s ease;
   border-radius: 50%;
 }
 
 input:checked + .toggle-slider {
   background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
+  border-color: var(--accent-blue);
 }
 
 input:checked + .toggle-slider:before {
@@ -1506,26 +1528,34 @@ input:checked + .toggle-slider:before {
 
 .settings-submit-box {
   margin-top: auto;
+  padding-top: 0.5rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .save-success-msg {
-  font-size: 0.675rem;
+  font-size: 0.725rem;
   color: var(--accent-emerald);
-  text-align: center;
+  font-weight: 500;
 }
 
 .btn-save-settings-gradient {
   background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
   color: #fff;
   border: none;
-  padding: 0.5rem;
-  border-radius: var(--radius-md);
-  font-size: 0.775rem;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-save-settings-gradient:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
 }
 
 /* Right Side Column Panels */

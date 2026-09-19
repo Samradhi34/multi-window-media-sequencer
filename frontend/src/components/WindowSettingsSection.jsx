@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-export default function WindowSettingsSection({ windowStatuses = [], onDeleteWindow }) {
+export default function WindowSettingsSection({ windowStatuses = [] }) {
   const [selectedWindowId, setSelectedWindowId] = useState('');
-  const [windowName, setWindowName] = useState('Window 1');
   const [cycleDuration, setCycleDuration] = useState('5 Hours');
   const [autoRepeat, setAutoRepeat] = useState(true);
   const [showTitleOverlay, setShowTitleOverlay] = useState(true);
@@ -15,18 +14,12 @@ export default function WindowSettingsSection({ windowStatuses = [], onDeleteWin
       const current = windowStatuses.find((w) => String(w.windowId) === String(selectedWindowId)) || windowStatuses[0];
       if (current) {
         setSelectedWindowId(current.windowId);
-        setWindowName(current.windowName);
       }
     }
   }, [windowStatuses, selectedWindowId]);
 
   const handleWindowChange = (e) => {
-    const id = e.target.value;
-    setSelectedWindowId(id);
-    const target = windowStatuses.find((w) => String(w.windowId) === String(id));
-    if (target) {
-      setWindowName(target.windowName);
-    }
+    setSelectedWindowId(e.target.value);
   };
 
   const handleSave = (e) => {
@@ -45,10 +38,15 @@ export default function WindowSettingsSection({ windowStatuses = [], onDeleteWin
       </div>
 
       <form className="settings-form-body" onSubmit={handleSave}>
+        {/* Select Display Window */}
         {windowStatuses && windowStatuses.length > 0 && (
           <div className="settings-field-group">
-            <label>Select Display Window</label>
+            <div className="label-with-helper">
+              <label htmlFor="select-display-window">Display Window</label>
+              <p className="setting-helper-text">Select which physical display screen to configure.</p>
+            </div>
             <select
+              id="select-display-window"
               className="settings-select"
               value={selectedWindowId}
               onChange={handleWindowChange}
@@ -62,19 +60,14 @@ export default function WindowSettingsSection({ windowStatuses = [], onDeleteWin
           </div>
         )}
 
+        {/* Default Cycle Duration */}
         <div className="settings-field-group">
-          <label>Window Name</label>
-          <input
-            type="text"
-            className="settings-input"
-            value={windowName}
-            onChange={(e) => setWindowName(e.target.value)}
-          />
-        </div>
-
-        <div className="settings-field-group">
-          <label>Default Cycle Duration</label>
+          <div className="label-with-helper">
+            <label htmlFor="cycle-duration">Default Cycle Duration</label>
+            <p className="setting-helper-text">Controls how long the playlist schedule runs before restarting.</p>
+          </div>
           <select
+            id="cycle-duration"
             className="settings-select"
             value={cycleDuration}
             onChange={(e) => setCycleDuration(e.target.value)}
@@ -87,45 +80,65 @@ export default function WindowSettingsSection({ windowStatuses = [], onDeleteWin
           </select>
         </div>
 
+        {/* Auto Repeat Playlist */}
         <div className="settings-toggle-row">
-          <span className="toggle-label">Auto Repeat Playlist</span>
+          <div className="label-with-helper">
+            <span className="toggle-label">Auto Repeat Playlist</span>
+            <p className="setting-helper-text">Restart playlist from the beginning after reaching the end.</p>
+          </div>
           <label className="toggle-switch">
             <input
               type="checkbox"
               checked={autoRepeat}
               onChange={(e) => setAutoRepeat(e.target.checked)}
+              aria-label="Auto Repeat Playlist"
             />
             <span className="toggle-slider"></span>
           </label>
         </div>
 
+        {/* Show Media Title (Overlay) */}
         <div className="settings-toggle-row">
-          <span className="toggle-label">Show Media Title (Overlay)</span>
+          <div className="label-with-helper">
+            <span className="toggle-label">Show Media Title (Overlay)</span>
+            <p className="setting-helper-text">Display media title text over the playing content.</p>
+          </div>
           <label className="toggle-switch">
             <input
               type="checkbox"
               checked={showTitleOverlay}
               onChange={(e) => setShowTitleOverlay(e.target.checked)}
+              aria-label="Show Media Title Overlay"
             />
             <span className="toggle-slider"></span>
           </label>
         </div>
 
+        {/* Enable Transition Effect */}
         <div className="settings-toggle-row">
-          <span className="toggle-label">Enable Transition Effect</span>
+          <div className="label-with-helper">
+            <span className="toggle-label">Enable Transition Effect</span>
+            <p className="setting-helper-text">Apply a visual fade animation between media items.</p>
+          </div>
           <label className="toggle-switch">
             <input
               type="checkbox"
               checked={enableTransition}
               onChange={(e) => setEnableTransition(e.target.checked)}
+              aria-label="Enable Transition Effect"
             />
             <span className="toggle-slider"></span>
           </label>
         </div>
 
+        {/* Transition Duration */}
         <div className="settings-field-group">
-          <label>Transition Duration</label>
+          <div className="label-with-helper">
+            <label htmlFor="transition-duration">Transition Duration</label>
+            <p className="setting-helper-text">Controls how long the visual transition animation lasts.</p>
+          </div>
           <select
+            id="transition-duration"
             className="settings-select"
             value={transitionDuration}
             onChange={(e) => setTransitionDuration(e.target.value)}
@@ -136,7 +149,8 @@ export default function WindowSettingsSection({ windowStatuses = [], onDeleteWin
           </select>
         </div>
 
-        <div className="settings-submit-box" style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', alignItems: 'center' }}>
+        {/* Save Changes Footer */}
+        <div className="settings-submit-box">
           {savedSuccess && <span className="save-success-msg">✓ Settings saved successfully!</span>}
           <button type="submit" className="btn-save-settings-gradient">
             💾 Save Changes

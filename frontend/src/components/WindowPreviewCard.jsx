@@ -100,12 +100,12 @@ const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus =
       <div className="preview-card-header-bar">
         <div className="window-playing-info">
           <span className="live-pulse-dot"></span>
-          <span className="window-name-title">{windowName}</span>
+          <span className="window-name-title" title={windowName}>{windowName}</span>
           <span className="playing-media-tag">
-            ● Playing: {activeMediaItem?.title ? activeMediaItem.title.substring(0, 14) : 'Blank'} ({mediaType === 'VIDEO' ? 'Video' : mediaType === 'IMAGE' ? 'Image' : 'Blank'})
+            ● {activeMediaItem?.title ? activeMediaItem.title.substring(0, 14) : 'Blank'} ({mediaType === 'VIDEO' ? 'Video' : mediaType === 'IMAGE' ? 'Image' : 'Blank'})
           </span>
         </div>
-        <div className="card-header-actions-group" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div className="card-header-actions-group">
           {onDeleteWindow && (
             <button
               className="btn-delete-window-card"
@@ -116,14 +116,16 @@ const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus =
                   onDeleteWindow(windowStatus.windowId);
                 }
               }}
+              aria-label={`Delete ${windowName}`}
             >
-              🗑️ Delete
+              🗑
             </button>
           )}
           <button
             className="btn-fullscreen-toggle"
             title={isCardFullscreen ? "Exit Fullscreen" : "Fullscreen"}
             onClick={toggleCardFullscreen}
+            aria-label="Toggle Fullscreen"
           >
             ⛶
           </button>

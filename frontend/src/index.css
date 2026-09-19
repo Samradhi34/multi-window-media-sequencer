@@ -910,9 +910,11 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.55rem 0.75rem;
+  padding: 0.45rem 0.65rem;
   background-color: var(--bg-card-header);
   border-bottom: 1px solid var(--border-color);
+  height: 38px;
+  box-sizing: border-box;
 }
 
 .window-playing-info {
@@ -920,6 +922,9 @@ body {
   align-items: center;
   gap: 0.4rem;
   min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  margin-right: 0.4rem;
 }
 
 .live-pulse-dot {
@@ -932,10 +937,14 @@ body {
 }
 
 .window-name-title {
-  font-size: 0.8rem;
+  font-size: 0.785rem;
   font-weight: 700;
   color: var(--text-main);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+  max-width: 140px;
 }
 
 .playing-media-tag {
@@ -944,6 +953,40 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex-shrink: 1;
+}
+
+.card-header-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.btn-delete-window-card {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.btn-delete-window-card:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.6);
+  color: #ffffff;
+  transform: scale(1.05);
 }
 
 .btn-fullscreen-toggle {
@@ -952,33 +995,18 @@ body {
   color: var(--text-dim);
   cursor: pointer;
   font-size: 0.85rem;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
 }
 
 .btn-fullscreen-toggle:hover {
   color: var(--text-main);
-}
-
-.btn-delete-window-card {
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #ef4444;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.725rem;
-  font-weight: 500;
-  padding: 0.2rem 0.45rem;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  line-height: 1;
-}
-
-.btn-delete-window-card:hover {
-  background: rgba(239, 68, 68, 0.25);
-  border-color: rgba(239, 68, 68, 0.6);
-  color: #f87171;
-  transform: translateY(-1px);
 }
 
 .preview-viewport-box {

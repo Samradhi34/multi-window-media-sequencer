@@ -323,11 +323,9 @@ export default function App() {
                       onRemoveMedia={handleRemoveMediaFromWindow}
                       onMoveMedia={handleMovePlaylistItem}
                       onUpdateDuration={handleUpdateMediaDuration}
-                      onDeleteWindow={handleDeleteWindowItem}
                     />
                     <WindowSettingsSection
                       windowStatuses={windowStatuses}
-                      onDeleteWindow={handleDeleteWindowItem}
                     />
                   </div>
                 </div>
@@ -370,7 +368,6 @@ export default function App() {
                   onRemoveMedia={handleRemoveMediaFromWindow}
                   onMoveMedia={handleMovePlaylistItem}
                   onUpdateDuration={handleUpdateMediaDuration}
-                  onDeleteWindow={handleDeleteWindowItem}
                 />
               </div>
             </div>
@@ -406,7 +403,6 @@ export default function App() {
                   onRemoveMedia={handleRemoveMediaFromWindow}
                   onMoveMedia={handleMovePlaylistItem}
                   onUpdateDuration={handleUpdateMediaDuration}
-                  onDeleteWindow={handleDeleteWindowItem}
                 />
               </div>
             </div>
@@ -443,7 +439,6 @@ export default function App() {
               <div className="settings-view-wrapper" style={{ maxWidth: '600px', margin: '0 auto' }}>
                 <WindowSettingsSection
                   windowStatuses={windowStatuses}
-                  onDeleteWindow={handleDeleteWindowItem}
                 />
               </div>
             </div>

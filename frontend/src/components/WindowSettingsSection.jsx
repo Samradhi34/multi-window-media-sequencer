@@ -41,10 +41,7 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
         {/* Select Display Window */}
         {windowStatuses && windowStatuses.length > 0 && (
           <div className="settings-field-group">
-            <div className="label-with-helper">
-              <label htmlFor="select-display-window">Display Window</label>
-              <p className="setting-helper-text">Select which physical display screen to configure.</p>
-            </div>
+            <label htmlFor="select-display-window">Display Window</label>
             <select
               id="select-display-window"
               className="settings-select"
@@ -62,10 +59,7 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
 
         {/* Default Cycle Duration */}
         <div className="settings-field-group">
-          <div className="label-with-helper">
-            <label htmlFor="cycle-duration">Default Cycle Duration</label>
-            <p className="setting-helper-text">Controls how long the playlist schedule runs before restarting.</p>
-          </div>
+          <label htmlFor="cycle-duration">Default Cycle Duration</label>
           <select
             id="cycle-duration"
             className="settings-select"
@@ -82,10 +76,7 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
 
         {/* Auto Repeat Playlist */}
         <div className="settings-toggle-row">
-          <div className="label-with-helper">
-            <span className="toggle-label">Auto Repeat Playlist</span>
-            <p className="setting-helper-text">Restart playlist from the beginning after reaching the end.</p>
-          </div>
+          <span className="toggle-label">Auto Repeat Playlist</span>
           <label className="toggle-switch">
             <input
               type="checkbox"
@@ -99,10 +90,7 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
 
         {/* Show Media Title (Overlay) */}
         <div className="settings-toggle-row">
-          <div className="label-with-helper">
-            <span className="toggle-label">Show Media Title (Overlay)</span>
-            <p className="setting-helper-text">Display media title text over the playing content.</p>
-          </div>
+          <span className="toggle-label">Show Media Title (Overlay)</span>
           <label className="toggle-switch">
             <input
               type="checkbox"
@@ -116,10 +104,7 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
 
         {/* Enable Transition Effect */}
         <div className="settings-toggle-row">
-          <div className="label-with-helper">
-            <span className="toggle-label">Enable Transition Effect</span>
-            <p className="setting-helper-text">Apply a visual fade animation between media items.</p>
-          </div>
+          <span className="toggle-label">Enable Transition Effect</span>
           <label className="toggle-switch">
             <input
               type="checkbox"
@@ -133,10 +118,7 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
 
         {/* Transition Duration */}
         <div className="settings-field-group">
-          <div className="label-with-helper">
-            <label htmlFor="transition-duration">Transition Duration</label>
-            <p className="setting-helper-text">Controls how long the visual transition animation lasts.</p>
-          </div>
+          <label htmlFor="transition-duration">Transition Duration</label>
           <select
             id="transition-duration"
             className="settings-select"

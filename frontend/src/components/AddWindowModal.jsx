@@ -44,10 +44,7 @@ export default function AddWindowModal({ onClose, onCreateWindow }) {
 
         <form onSubmit={handleSubmit} className="modal-body">
           <div className="settings-field-group">
-            <div className="label-with-helper">
-              <label htmlFor="window-name-input">Window Name</label>
-              <p className="setting-helper-text">Enter a unique name for this display screen.</p>
-            </div>
+            <label htmlFor="window-name-input">Window Name</label>
             <input
               id="window-name-input"
               type="text"
@@ -61,10 +58,7 @@ export default function AddWindowModal({ onClose, onCreateWindow }) {
           </div>
 
           <div className="settings-field-group">
-            <div className="label-with-helper">
-              <label htmlFor="window-desc-input">Description / Location (Optional)</label>
-              <p className="setting-helper-text">Optional notes or physical location description.</p>
-            </div>
+            <label htmlFor="window-desc-input">Description / Location</label>
             <input
               id="window-desc-input"
               type="text"

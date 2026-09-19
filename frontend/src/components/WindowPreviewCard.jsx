@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus = {}, mediaCatalog = [] }) {
+const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus = {}, mediaCatalog = [], onDeleteWindow }) {
   const {
     windowName,
     activeMediaItem,
@@ -105,13 +105,29 @@ const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus =
             ● Playing: {activeMediaItem?.title ? activeMediaItem.title.substring(0, 14) : 'Blank'} ({mediaType === 'VIDEO' ? 'Video' : mediaType === 'IMAGE' ? 'Image' : 'Blank'})
           </span>
         </div>
-        <button
-          className="btn-fullscreen-toggle"
-          title={isCardFullscreen ? "Exit Fullscreen" : "Fullscreen"}
-          onClick={toggleCardFullscreen}
-        >
-          ⛶
-        </button>
+        <div className="card-header-actions-group" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          {onDeleteWindow && (
+            <button
+              className="btn-delete-window-card"
+              title={`Delete ${windowName}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (window.confirm(`Are you sure you want to delete "${windowName}"?`)) {
+                  onDeleteWindow(windowStatus.windowId);
+                }
+              }}
+            >
+              🗑️ Delete
+            </button>
+          )}
+          <button
+            className="btn-fullscreen-toggle"
+            title={isCardFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+            onClick={toggleCardFullscreen}
+          >
+            ⛶
+          </button>
+        </div>
       </div>
 
       {/* Main Viewport Card */}

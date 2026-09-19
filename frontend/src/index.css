@@ -958,6 +958,29 @@ body {
   color: var(--text-main);
 }
 
+.btn-delete-window-card {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.725rem;
+  font-weight: 500;
+  padding: 0.2rem 0.45rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  line-height: 1;
+}
+
+.btn-delete-window-card:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.6);
+  color: #f87171;
+  transform: translateY(-1px);
+}
+
 .preview-viewport-box {
   position: relative;
   aspect-ratio: 16 / 10;

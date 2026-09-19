@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-export default function AddWindowModal({ onClose, onCreateWindow }) {
-  const [name, setName] = useState('');
+export default function AddWindowModal({ onClose, onCreateWindow, existingWindowCount = 3 }) {
+  const defaultSuggestedName = `Window ${existingWindowCount + 1}`;
+  const [name, setName] = useState(defaultSuggestedName);
   const [description, setDescription] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');

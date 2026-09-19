@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function WindowSettingsSection({ windowStatuses = [] }) {
+export default function WindowSettingsSection({ windowStatuses = [], onDeleteWindow }) {
   const [selectedWindowId, setSelectedWindowId] = useState('');
   const [cycleDuration, setCycleDuration] = useState('5 Hours');
   const [autoRepeat, setAutoRepeat] = useState(true);
@@ -41,7 +41,25 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
         {/* Select Display Window */}
         {windowStatuses && windowStatuses.length > 0 && (
           <div className="settings-field-group">
-            <label htmlFor="select-display-window">Display Window</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+              <label htmlFor="select-display-window" style={{ margin: 0 }}>Display Window</label>
+              {selectedWindowId && onDeleteWindow && (
+                <button
+                  type="button"
+                  className="btn-delete-window-card"
+                  style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}
+                  onClick={() => {
+                    const selectedWin = windowStatuses.find((w) => String(w.windowId) === String(selectedWindowId));
+                    const winName = selectedWin ? selectedWin.windowName : `Window ID ${selectedWindowId}`;
+                    if (window.confirm(`Are you sure you want to delete "${winName}"?`)) {
+                      onDeleteWindow(Number(selectedWindowId));
+                    }
+                  }}
+                >
+                  🗑️ Delete Window
+                </button>
+              )}
+            </div>
             <select
               id="select-display-window"
               className="settings-select"

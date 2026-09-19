@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import WindowPreviewCard from './WindowPreviewCard';
 
-export default function LiveWindowPreview({ windowStatuses = [], mediaCatalog = [], onOpenAddWindow }) {
+export default function LiveWindowPreview({ windowStatuses = [], mediaCatalog = [], onOpenAddWindow, onDeleteWindow }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const sectionRef = useRef(null);
 
@@ -52,7 +52,12 @@ export default function LiveWindowPreview({ windowStatuses = [], mediaCatalog = 
 
       <div className="live-preview-3col-grid" data-count={count}>
         {windowStatuses.map((ws) => (
-          <WindowPreviewCard key={ws.windowId} windowStatus={ws} mediaCatalog={mediaCatalog} />
+          <WindowPreviewCard
+            key={ws.windowId}
+            windowStatus={ws}
+            mediaCatalog={mediaCatalog}
+            onDeleteWindow={onDeleteWindow}
+          />
         ))}
       </div>
     </section>

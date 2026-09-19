@@ -308,6 +308,7 @@ export default function App() {
                     windowStatuses={windowStatuses}
                     mediaCatalog={mediaCatalog}
                     onOpenAddWindow={handleOpenAddWindowModal}
+                    onDeleteWindow={handleDeleteWindowItem}
                   />
                   <div className="middle-3col-grid">
                     <MediaLibrarySection
@@ -359,6 +360,7 @@ export default function App() {
                 windowStatuses={windowStatuses}
                 mediaCatalog={mediaCatalog}
                 onOpenAddWindow={handleOpenAddWindowModal}
+                onDeleteWindow={handleDeleteWindowItem}
               />
               <div className="view-secondary-section" style={{ marginTop: '1.5rem' }}>
                 <WindowPlaylistsSection
@@ -468,6 +470,7 @@ export default function App() {
         <AddWindowModal
           onClose={handleCloseAddWindowModal}
           onCreateWindow={handleCreateWindowItem}
+          existingWindowCount={windowStatuses.length}
         />
       )}
     </div>

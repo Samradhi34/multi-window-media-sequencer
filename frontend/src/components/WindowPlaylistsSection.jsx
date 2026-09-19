@@ -41,16 +41,32 @@ export default function WindowPlaylistsSection({
       </div>
 
       {/* Window Tabs Bar */}
-      <div className="window-selector-tabs">
-        {windowStatuses.map((w) => (
+      <div className="window-selector-tabs" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+        <div className="tab-pills-group" style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', flex: 1 }}>
+          {windowStatuses.map((w) => (
+            <button
+              key={w.windowId}
+              className={`window-tab-pill ${w.windowId === (activeWindow?.windowId || 1) ? 'active' : ''}`}
+              onClick={() => setSelectedWindowId(w.windowId)}
+            >
+              {w.windowName}
+            </button>
+          ))}
+        </div>
+        {activeWindow && onDeleteWindow && (
           <button
-            key={w.windowId}
-            className={`window-tab-pill ${w.windowId === (activeWindow?.windowId || 1) ? 'active' : ''}`}
-            onClick={() => setSelectedWindowId(w.windowId)}
+            className="btn-delete-window-card"
+            style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+            title={`Delete ${activeWindow.windowName}`}
+            onClick={() => {
+              if (window.confirm(`Are you sure you want to delete "${activeWindow.windowName}"?`)) {
+                onDeleteWindow(activeWindow.windowId);
+              }
+            }}
           >
-            {w.windowName}
+            🗑️ Delete Window
           </button>
-        ))}
+        )}
       </div>
 
       {/* Playlist Table */}

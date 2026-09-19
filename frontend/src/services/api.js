@@ -1,13 +1,20 @@
 const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const API_BASE_URL = isLocalDev ? 'http://localhost:8080/api' : `${window.location.origin}/api`;
 
-async function fetchWithRetry(url, options = {}, retries = 2, delayMs = 1500) {
+async function fetchWithRetry(url, options = {}, retries = 6, delayMs = 2000) {
   for (let i = 0; i <= retries; i++) {
     try {
       const response = await fetch(url, options);
+      // Retry if server returns cold-start gateway error codes (502, 503, 504) while restarting
+      if ((response.status === 502 || response.status === 503 || response.status === 504) && i < retries) {
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        continue;
+      }
       return response;
     } catch (err) {
-      if (i === retries) throw err;
+      if (i === retries) {
+        throw new Error('Server starting up or connection busy. Please retry in a few seconds.');
+      }
       await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
   }

@@ -1,0 +1,13 @@
+target/
+node_modules/
+.git/
+.gitignore
+.settings/
+.classpath
+.project
+.factorypath
+bin/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+*.log

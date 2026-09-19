@@ -1,0 +1,41 @@
+# Maven build output
+target/
+bin/
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/test/**/target/
+
+# Maven wrapper jar
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE files
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+.nb-gradle/
+/nbproject/private/
+/nbbuild/
+/nbdist/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

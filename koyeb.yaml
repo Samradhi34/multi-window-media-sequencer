@@ -1,0 +1,12 @@
+name: multi-window-media-sequencer
+type: web
+image: docker.io/library/multi-window-media-sequencer:latest
+ports:
+  - port: 8080
+    path: /
+env:
+  - key: PORT
+    value: "8080"
+instance_type: nano
+regions:
+  - fra

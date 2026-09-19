@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import WindowPreviewCard from './WindowPreviewCard';
 
-export default function LiveWindowPreview({ windowStatuses, mediaCatalog = [], onOpenAddWindow }) {
+export default function LiveWindowPreview({ windowStatuses = [], mediaCatalog = [], onOpenAddWindow }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const sectionRef = useRef(null);
 
@@ -28,8 +28,10 @@ export default function LiveWindowPreview({ windowStatuses, mediaCatalog = [], o
     }
   };
 
+  const count = windowStatuses ? windowStatuses.length : 3;
+
   return (
-    <section className="live-preview-section" ref={sectionRef}>
+    <section className={`live-preview-section ${isFullscreen ? 'fullscreen-active' : ''}`} ref={sectionRef}>
       <div className="section-title-bar">
         <div className="title-with-icon">
           <span className="section-title-icon">🖥️</span>
@@ -38,7 +40,7 @@ export default function LiveWindowPreview({ windowStatuses, mediaCatalog = [], o
         <div className="header-status-group">
           <span className="badge-playing-status">● All Windows Playing</span>
           {onOpenAddWindow && (
-            <button className="btn-add-media-primary" onClick={onOpenAddWindow}>
+            <button className="btn-add-window-header" onClick={onOpenAddWindow}>
               + Add Window
             </button>
           )}
@@ -48,7 +50,7 @@ export default function LiveWindowPreview({ windowStatuses, mediaCatalog = [], o
         </div>
       </div>
 
-      <div className="live-preview-3col-grid">
+      <div className="live-preview-3col-grid" data-count={count}>
         {windowStatuses.map((ws) => (
           <WindowPreviewCard key={ws.windowId} windowStatus={ws} mediaCatalog={mediaCatalog} />
         ))}

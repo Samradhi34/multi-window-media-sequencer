@@ -4,13 +4,10 @@ export default function AddMediaModal({ targetWindow, mediaCatalog, onClose, onA
   const isCatalogOnly = !targetWindow || !targetWindow.id;
   const [activeTab, setActiveTab] = useState(isCatalogOnly ? 'create' : 'catalog'); // 'catalog' or 'create'
 
-  // Catalog selection state
   const [selectedMediaId, setSelectedMediaId] = useState('');
 
-  // Source type for new creation: 'file' (Local System) or 'url' (Web URL)
   const [sourceType, setSourceType] = useState('file');
 
-  // New media creation state
   const [title, setTitle] = useState('');
   const [mediaType, setMediaType] = useState('IMAGE');
   const [url, setUrl] = useState('');

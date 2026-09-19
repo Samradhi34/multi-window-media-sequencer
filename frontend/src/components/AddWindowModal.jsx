@@ -18,7 +18,7 @@ export default function AddWindowModal({ onClose, onCreateWindow }) {
       setErrorMessage('');
       await onCreateWindow({
         name: name.trim(),
-        description: description.trim() || 'Dynamic Display Screen'
+        description: description.trim() || 'Display Screen'
       });
       onClose();
     } catch (err) {
@@ -33,20 +33,25 @@ export default function AddWindowModal({ onClose, onCreateWindow }) {
       <div className="modal-content" style={{ maxWidth: '460px' }}>
         <div className="modal-header">
           <h3>🖥️ Add New Display Window</h3>
-          <button className="close-btn" onClick={onClose}>✖</button>
+          <button className="close-btn" onClick={onClose} aria-label="Close modal">✖</button>
         </div>
 
         {errorMessage && (
-          <div className="modal-error-alert" style={{ color: '#ef4444', fontSize: '0.8rem', padding: '0.5rem', background: 'rgba(239,68,68,0.1)', borderRadius: '6px', border: '1px solid rgba(239,68,68,0.3)', margin: '0.5rem 0' }}>
+          <div className="modal-error-alert" style={{ color: '#ef4444', fontSize: '0.8rem', padding: '0.5rem 0.75rem', background: 'rgba(239,68,68,0.1)', borderRadius: '6px', border: '1px solid rgba(239,68,68,0.3)', margin: '0.75rem 1.25rem 0' }}>
             ⚠️ {errorMessage}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="modal-body">
-          <div className="form-group">
-            <label>Window Name</label>
+          <div className="settings-field-group">
+            <div className="label-with-helper">
+              <label htmlFor="window-name-input">Window Name</label>
+              <p className="setting-helper-text">Enter a unique name for this display screen.</p>
+            </div>
             <input
+              id="window-name-input"
               type="text"
+              className="settings-input"
               placeholder="e.g., Window 4 (Executive Lounge)"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -55,10 +60,15 @@ export default function AddWindowModal({ onClose, onCreateWindow }) {
             />
           </div>
 
-          <div className="form-group">
-            <label>Description / Location</label>
+          <div className="settings-field-group">
+            <div className="label-with-helper">
+              <label htmlFor="window-desc-input">Description / Location (Optional)</label>
+              <p className="setting-helper-text">Optional notes or physical location description.</p>
+            </div>
             <input
+              id="window-desc-input"
               type="text"
+              className="settings-input"
               placeholder="e.g., High-resolution feature display screen"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -66,8 +76,8 @@ export default function AddWindowModal({ onClose, onCreateWindow }) {
           </div>
 
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
-            <button type="submit" className="btn btn-primary" disabled={submitting}>
+            <button type="button" className="btn-modal-cancel" onClick={onClose}>Cancel</button>
+            <button type="submit" className="btn-modal-submit-gradient" disabled={submitting}>
               {submitting ? 'Creating...' : '+ Create Display Window'}
             </button>
           </div>

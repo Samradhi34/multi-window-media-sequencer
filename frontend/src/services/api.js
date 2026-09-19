@@ -1,6 +1,18 @@
 const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const API_BASE_URL = isLocalDev ? 'http://localhost:8080/api' : `${window.location.origin}/api`;
 
+async function fetchWithRetry(url, options = {}, retries = 2, delayMs = 1500) {
+  for (let i = 0; i <= retries; i++) {
+    try {
+      const response = await fetch(url, options);
+      return response;
+    } catch (err) {
+      if (i === retries) throw err;
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+  }
+}
+
 async function handleResponse(response) {
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
@@ -13,17 +25,17 @@ async function handleResponse(response) {
 export const api = {
   // Playback & Windows
   getAllWindowsPlayback: async () => {
-    const res = await fetch(`${API_BASE_URL}/windows/playback`);
+    const res = await fetchWithRetry(`${API_BASE_URL}/windows/playback`);
     return handleResponse(res);
   },
 
   getWindowPlayback: async (windowId) => {
-    const res = await fetch(`${API_BASE_URL}/windows/${windowId}/playback`);
+    const res = await fetchWithRetry(`${API_BASE_URL}/windows/${windowId}/playback`);
     return handleResponse(res);
   },
 
   createWindow: async (windowData) => {
-    const res = await fetch(`${API_BASE_URL}/windows`, {
+    const res = await fetchWithRetry(`${API_BASE_URL}/windows`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(windowData),
@@ -32,14 +44,14 @@ export const api = {
   },
 
   deleteWindow: async (windowId) => {
-    const res = await fetch(`${API_BASE_URL}/windows/${windowId}`, {
+    const res = await fetchWithRetry(`${API_BASE_URL}/windows/${windowId}`, {
       method: 'DELETE',
     });
     return handleResponse(res);
   },
 
   addMediaToWindow: async (windowId, mediaId) => {
-    const res = await fetch(`${API_BASE_URL}/windows/${windowId}/media`, {
+    const res = await fetchWithRetry(`${API_BASE_URL}/windows/${windowId}/media`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ mediaId }),
@@ -48,14 +60,14 @@ export const api = {
   },
 
   removeMediaFromWindow: async (windowId, mediaId) => {
-    const res = await fetch(`${API_BASE_URL}/windows/${windowId}/media/${mediaId}`, {
+    const res = await fetchWithRetry(`${API_BASE_URL}/windows/${windowId}/media/${mediaId}`, {
       method: 'DELETE',
     });
     return handleResponse(res);
   },
 
   movePlaylistItem: async (windowId, mediaId, direction) => {
-    const res = await fetch(`${API_BASE_URL}/windows/${windowId}/media/${mediaId}/move`, {
+    const res = await fetchWithRetry(`${API_BASE_URL}/windows/${windowId}/media/${mediaId}/move`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ direction }),
@@ -65,12 +77,12 @@ export const api = {
 
   // Media Catalog
   getMediaCatalog: async () => {
-    const res = await fetch(`${API_BASE_URL}/media`);
+    const res = await fetchWithRetry(`${API_BASE_URL}/media`);
     return handleResponse(res);
   },
 
   createMediaItem: async (mediaData) => {
-    const res = await fetch(`${API_BASE_URL}/media`, {
+    const res = await fetchWithRetry(`${API_BASE_URL}/media`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(mediaData),
@@ -79,7 +91,7 @@ export const api = {
   },
 
   updateMediaDuration: async (mediaId, durationSeconds) => {
-    const res = await fetch(`${API_BASE_URL}/media/${mediaId}/duration`, {
+    const res = await fetchWithRetry(`${API_BASE_URL}/media/${mediaId}/duration`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ durationSeconds: Number(durationSeconds) }),
@@ -88,7 +100,7 @@ export const api = {
   },
 
   deleteMediaItem: async (mediaId) => {
-    const res = await fetch(`${API_BASE_URL}/media/${mediaId}`, {
+    const res = await fetchWithRetry(`${API_BASE_URL}/media/${mediaId}`, {
       method: 'DELETE',
     });
     return handleResponse(res);
@@ -96,12 +108,12 @@ export const api = {
 
   // Global Sync
   getSyncStatus: async () => {
-    const res = await fetch(`${API_BASE_URL}/sync`);
+    const res = await fetchWithRetry(`${API_BASE_URL}/sync`);
     return handleResponse(res);
   },
 
   triggerSync: async (mediaId, durationSeconds) => {
-    const res = await fetch(`${API_BASE_URL}/sync/trigger`, {
+    const res = await fetchWithRetry(`${API_BASE_URL}/sync/trigger`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ mediaId, durationSeconds: Number(durationSeconds) }),
@@ -110,7 +122,7 @@ export const api = {
   },
 
   cancelSync: async () => {
-    const res = await fetch(`${API_BASE_URL}/sync/cancel`, {
+    const res = await fetchWithRetry(`${API_BASE_URL}/sync/cancel`, {
       method: 'POST',
     });
     return handleResponse(res);

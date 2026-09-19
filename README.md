@@ -1,5 +1,7 @@
 # Multi-Window Media Sequencer
 
+**Live Demo:** https://multi-window-media-sequencer.viex.onrender.com
+
 A full-stack web application for managing and playing media content across multiple display screens. It lets you control what image or video plays on each screen, set up playlists per screen, and broadcast a single piece of media to all screens at once — all from one dashboard.
 
 ---
@@ -358,16 +360,25 @@ docker run -p 8080:8080 \
 
 ---
 
-## Deployment on Koyeb
+## Deployment on Render
+
+The application is deployed and live on Render:
+
+**Live URL:** https://multi-window-media-sequencer.viex.onrender.com
+
+To deploy your own instance:
 
 1. Push your repository to GitHub.
-2. Log in to [https://app.koyeb.com](https://app.koyeb.com).
-3. Click **Create Service** and connect your GitHub repository.
-4. Set the builder to **Dockerfile**.
-5. Set the port to `8080`.
-6. Click **Deploy**.
+2. Go to [https://render.com](https://render.com) and sign up with GitHub.
+3. Click **New +** and select **Web Service**.
+4. Connect your GitHub repository.
+5. Set the environment to **Docker** and branch to **main**.
+6. Select **Instance Type: Free**.
+7. Click **Create Web Service**.
 
-Koyeb builds the Docker image and provides a live HTTPS URL. The application starts with an embedded H2 database. To use PostgreSQL, add the database environment variables listed above in the Koyeb service settings.
+Render builds the Docker image automatically and provides a live HTTPS URL. The application starts with an embedded H2 in-memory database on the free tier. To use PostgreSQL, add the database environment variables in the Render service **Environment** settings.
+
+> **Note:** On the free tier, the application sleeps after 15 minutes of inactivity and takes about 30 seconds to wake up on the next request. This is a Render free tier limitation and does not affect functionality.
 
 ---
 

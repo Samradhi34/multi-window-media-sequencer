@@ -11,12 +11,17 @@ class SequencerWebSocketClient {
     this.reconnectTimer = null;
   }
 
-  connect(host = window.location.hostname || 'localhost', port = '8080') {
+  connect() {
     if (this.socket && (this.socket.readyState === WebSocket.CONNECTING || this.socket.readyState === WebSocket.OPEN)) {
       return;
     }
 
-    const wsUrl = `ws://${host}:${port}/ws-sequencer-raw`;
+    const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const host = window.location.hostname;
+    const portStr = isLocalDev ? ':8080' : '';
+    const wsUrl = `${protocol}://${host}${portStr}/ws-sequencer-raw`;
+
     console.log('[WebSocket] Connecting to STOMP broker at:', wsUrl);
 
     try {
@@ -53,7 +58,7 @@ class SequencerWebSocketClient {
       this.socket.onclose = () => {
         console.warn('[WebSocket] Connection closed. Retrying in 3 seconds...');
         this.isConnected = false;
-        this.scheduleReconnect(host, port);
+        this.scheduleReconnect();
       };
 
       this.socket.onerror = (err) => {
@@ -62,7 +67,7 @@ class SequencerWebSocketClient {
       };
     } catch (e) {
       console.error('[WebSocket] Failed to initialize WebSocket:', e);
-      this.scheduleReconnect(host, port);
+      this.scheduleReconnect();
     }
   }
 
@@ -99,10 +104,10 @@ class SequencerWebSocketClient {
     return () => this.syncSubscribers.delete(callback);
   }
 
-  scheduleReconnect(host, port) {
+  scheduleReconnect() {
     if (this.reconnectTimer) clearTimeout(this.reconnectTimer);
     this.reconnectTimer = setTimeout(() => {
-      this.connect(host, port);
+      this.connect();
     }, 3000);
   }
 

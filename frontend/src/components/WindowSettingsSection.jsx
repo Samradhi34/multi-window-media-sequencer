@@ -136,23 +136,9 @@ export default function WindowSettingsSection({ windowStatuses = [], onDeleteWin
           </select>
         </div>
 
-        <div className="settings-submit-box" style={{ display: 'flex', gap: '0.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
-          {onDeleteWindow && windowStatuses.length > 1 && (
-            <button
-              type="button"
-              className="btn-action-icon delete"
-              style={{ padding: '0.4rem 0.8rem', height: 'auto', borderRadius: '6px' }}
-              onClick={() => {
-                if (window.confirm(`Delete display window "${windowName}"?`)) {
-                  onDeleteWindow(selectedWindowId);
-                }
-              }}
-            >
-              🗑 Delete Window
-            </button>
-          )}
+        <div className="settings-submit-box" style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', alignItems: 'center' }}>
           {savedSuccess && <span className="save-success-msg">✓ Settings saved successfully!</span>}
-          <button type="submit" className="btn-save-settings-gradient" style={{ marginLeft: 'auto' }}>
+          <button type="submit" className="btn-save-settings-gradient">
             💾 Save Changes
           </button>
         </div>

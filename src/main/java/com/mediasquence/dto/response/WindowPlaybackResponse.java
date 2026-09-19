@@ -24,4 +24,5 @@ public class WindowPlaybackResponse implements Serializable {
     private List<PlaylistItem> playlist;
     private Integer totalPlaylistDurationSeconds;
     private boolean isSyncActive;
+    private Long serverTimeMs;
 }

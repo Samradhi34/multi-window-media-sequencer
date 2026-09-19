@@ -35,6 +35,7 @@ public class SyncServiceImpl implements SyncService {
                     .startTimeMs(null)
                     .durationSeconds(0)
                     .remainingSeconds(0)
+                    .serverTimeMs(System.currentTimeMillis())
                     .build();
         }
 
@@ -51,6 +52,7 @@ public class SyncServiceImpl implements SyncService {
                     .startTimeMs(syncState.getStartTimeMs())
                     .durationSeconds(syncState.getDurationSeconds())
                     .remainingSeconds(0)
+                    .serverTimeMs(System.currentTimeMillis())
                     .build();
         }
 
@@ -64,6 +66,7 @@ public class SyncServiceImpl implements SyncService {
                 .startTimeMs(syncState.getStartTimeMs())
                 .durationSeconds(syncState.getDurationSeconds())
                 .remainingSeconds(remainingSec)
+                .serverTimeMs(System.currentTimeMillis())
                 .build();
     }
 
@@ -93,6 +96,7 @@ public class SyncServiceImpl implements SyncService {
                 .startTimeMs(savedState.getStartTimeMs())
                 .durationSeconds(savedState.getDurationSeconds())
                 .remainingSeconds(savedState.getDurationSeconds())
+                .serverTimeMs(System.currentTimeMillis())
                 .build();
     }
 

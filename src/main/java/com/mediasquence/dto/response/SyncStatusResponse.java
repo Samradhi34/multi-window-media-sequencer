@@ -18,4 +18,5 @@ public class SyncStatusResponse implements Serializable {
     private Long startTimeMs;
     private Integer durationSeconds;
     private Integer remainingSeconds;
+    private Long serverTimeMs;
 }

@@ -115,6 +115,7 @@ public class DisplayWindowServiceImpl implements DisplayWindowService {
                     .playlist(sanitizePlaylist(window.getPlaylistItems()))
                     .totalPlaylistDurationSeconds(calculateTotalDuration(window.getPlaylistItems()))
                     .isSyncActive(true)
+                    .serverTimeMs(System.currentTimeMillis())
                     .build();
         }
 
@@ -132,6 +133,7 @@ public class DisplayWindowServiceImpl implements DisplayWindowService {
                     .playlist(playlist)
                     .totalPlaylistDurationSeconds(0)
                     .isSyncActive(false)
+                    .serverTimeMs(System.currentTimeMillis())
                     .build();
         }
 
@@ -149,6 +151,7 @@ public class DisplayWindowServiceImpl implements DisplayWindowService {
                     .playlist(playlist)
                     .totalPlaylistDurationSeconds(0)
                     .isSyncActive(false)
+                    .serverTimeMs(System.currentTimeMillis())
                     .build();
         }
 
@@ -195,6 +198,7 @@ public class DisplayWindowServiceImpl implements DisplayWindowService {
                 .playlist(sanitizePlaylist(playlist))
                 .totalPlaylistDurationSeconds(totalPlaylistDuration)
                 .isSyncActive(false)
+                .serverTimeMs(System.currentTimeMillis())
                 .build();
     }
 

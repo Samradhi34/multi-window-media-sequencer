@@ -23,6 +23,7 @@ export default function App() {
   const [syncStatus, setSyncStatus] = useState({ isActive: false, remainingSeconds: 0 });
   const [isConnected, setIsConnected] = useState(true);
   const [isWebSocketActive, setIsWebSocketActive] = useState(false);
+  const [serverTimeMs, setServerTimeMs] = useState(null);
   const [activityLogs, setActivityLogs] = useState([]);
 
   // Modal State
@@ -49,6 +50,9 @@ export default function App() {
   const refreshPlayback = useCallback(async () => {
     try {
       const statuses = await api.getAllWindowsPlayback();
+      if (Array.isArray(statuses) && statuses.length > 0 && statuses[0].serverTimeMs) {
+        setServerTimeMs(statuses[0].serverTimeMs);
+      }
       setWindowStatuses((prev) => {
         if (JSON.stringify(prev) === JSON.stringify(statuses)) {
           return prev;
@@ -100,6 +104,9 @@ export default function App() {
       if (Array.isArray(statuses)) {
         setIsWebSocketActive(true);
         setIsConnected(true);
+        if (statuses.length > 0 && statuses[0].serverTimeMs) {
+          setServerTimeMs(statuses[0].serverTimeMs);
+        }
         setWindowStatuses((prev) => {
           if (JSON.stringify(prev) === JSON.stringify(statuses)) return prev;
           return statuses;
@@ -276,6 +283,7 @@ export default function App() {
         <TopHeader
           isConnected={isConnected}
           isWebSocketActive={isWebSocketActive}
+          serverTimeMs={serverTimeMs}
           onToggleMobileSidebar={() => setIsMobileSidebarOpen((prev) => !prev)}
         />
 

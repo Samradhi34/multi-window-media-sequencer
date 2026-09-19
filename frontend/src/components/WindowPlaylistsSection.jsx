@@ -38,20 +38,6 @@ export default function WindowPlaylistsSection({
           <span className="card-header-icon">📋</span>
           <h3>Window Playlists</h3>
         </div>
-        {onDeleteWindow && activeWindow && windowStatuses.length > 1 && (
-          <button
-            className="btn-action-icon delete"
-            style={{ fontSize: '0.8rem', padding: '0.25rem 0.6rem', height: 'auto', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', borderRadius: '6px' }}
-            title={`Delete ${activeWindow.windowName}`}
-            onClick={() => {
-              if (window.confirm(`Are you sure you want to delete ${activeWindow.windowName}?`)) {
-                onDeleteWindow(activeWindow.windowId);
-              }
-            }}
-          >
-            🗑 Delete Window
-          </button>
-        )}
       </div>
 
       {/* Window Tabs Bar */}

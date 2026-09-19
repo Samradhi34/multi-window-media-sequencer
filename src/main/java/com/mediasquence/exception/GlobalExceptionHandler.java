@@ -29,10 +29,20 @@ public class GlobalExceptionHandler {
 
         log.error("Exception handling request [{} {}]: {}", request.getMethod(), request.getRequestURI(), exception.getMessage());
 
-        if (exception instanceof ResourceNotFoundException resourceNotFoundException) {
+        if (exception instanceof WindowNotEmptyException windowNotEmptyException) {
+            status = HttpStatus.CONFLICT;
+            message = windowNotEmptyException.getMessage();
+            log.warn("WindowNotEmptyException occurred on [{} {}]: {}", request.getMethod(), request.getRequestURI(), message);
+        }
+        else if (exception instanceof ResourceNotFoundException resourceNotFoundException) {
             status = HttpStatus.NOT_FOUND;
             message = resourceNotFoundException.getMessage();
             log.warn("Resource not found exception occurred: {}", message);
+        }
+        else if (exception instanceof BaseRuntimeException baseRuntimeException) {
+            status = baseRuntimeException.getStatus() != null ? baseRuntimeException.getStatus() : HttpStatus.BAD_REQUEST;
+            message = baseRuntimeException.getMessage();
+            log.warn("BaseRuntimeException occurred: {}", message);
         }
         else if (exception instanceof NoResourceFoundException noResourceException) {
             status = HttpStatus.NOT_FOUND;
@@ -75,7 +85,7 @@ public class GlobalExceptionHandler {
         }
         else {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
-            message = "An unexpected error occurred: " + exception.getMessage();
+            message = "An unexpected server error occurred. Please try again later.";
             log.info("Requested URL: {}", request.getRequestURL());
             log.error("Unhandled exception details: ", exception);
         }

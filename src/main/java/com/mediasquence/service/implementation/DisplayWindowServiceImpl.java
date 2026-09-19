@@ -79,15 +79,30 @@ public class DisplayWindowServiceImpl implements DisplayWindowService {
     }
 
     @Override
+    @Transactional
     public void deleteWindow(Long windowId) {
         DisplayWindow window = getWindowById(windowId);
-        playlistItemRepository.deleteByDisplayWindowId(window.getId());
+
+        List<PlaylistItem> playlist = playlistItemRepository.findByDisplayWindowIdOrderBySequenceOrderAsc(window.getId());
+        int playlistCount = (playlist != null) ? playlist.size() : 0;
+        if (playlistCount == 0 && window.getPlaylistItems() != null) {
+            playlistCount = window.getPlaylistItems().size();
+        }
+
+        if (playlistCount > 0) {
+            log.warn("Cannot delete window ID: {} ('{}') - playlist still contains {} media item(s)",
+                    windowId, window.getName(), playlistCount);
+            throw new com.mediasquence.exception.WindowNotEmptyException(
+                    "Cannot delete this window because its playlist still contains media items. Remove all playlist items first."
+            );
+        }
+
         displayWindowRepository.delete(window);
         displayWindowRepository.flush();
         if (entityManager != null) {
             entityManager.clear();
         }
-        log.info("Successfully deleted display window ID: {} ('{}')", window.getId(), window.getName());
+        log.info("Successfully deleted empty display window ID: {} ('{}')", window.getId(), window.getName());
     }
 
     @Override

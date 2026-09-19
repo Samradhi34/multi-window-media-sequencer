@@ -65,7 +65,7 @@ The application is built for multi-screen environments (retail storefronts, airp
 | API Communication | Fetch API (REST) |
 | Real-Time | Native WebSocket client (STOMP frames) |
 | Containerization | Docker (multi-stage build) |
-| Cloud Deployment | Koyeb, Render |
+| Cloud Deployment | Render (Docker Web Service) |
 
 ---
 
@@ -145,7 +145,6 @@ multi-window-media-sequencer/
 ├── Dockerfile                            # Multi-stage Docker build
 ├── docker-compose.yml                    # Local Docker orchestration
 ├── .dockerignore
-├── koyeb.yaml                            # Koyeb deployment config
 ├── render.yaml                           # Render deployment config
 └── pom.xml
 ```

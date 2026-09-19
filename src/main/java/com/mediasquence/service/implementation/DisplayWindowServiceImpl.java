@@ -65,10 +65,14 @@ public class DisplayWindowServiceImpl implements DisplayWindowService {
 
         String name = request.getName().trim();
         if (displayWindowRepository.findByName(name).isPresent()) {
-            throw new IllegalArgumentException("Display window with name '" + name + "' already exists");
+            throw new IllegalArgumentException("Window '" + name + "' already exists. Please choose another name.");
         }
 
-        DisplayWindow window = new DisplayWindow(name, request.getDescription());
+        String description = (request.getDescription() != null && !request.getDescription().trim().isEmpty())
+                ? request.getDescription().trim()
+                : null;
+
+        DisplayWindow window = new DisplayWindow(name, description);
         DisplayWindow saved = displayWindowRepository.save(window);
         log.info("Successfully created new display window ID: {} ('{}')", saved.getId(), saved.getName());
         return saved;

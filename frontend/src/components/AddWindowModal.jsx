@@ -14,16 +14,21 @@ export default function AddWindowModal({ onClose, onCreateWindow, existingWindow
       return;
     }
 
+    setSubmitting(true);
+    setErrorMessage('');
+
     try {
-      setSubmitting(true);
-      setErrorMessage('');
-      await onCreateWindow({
+      const payload = {
         name: name.trim(),
-        description: description.trim() || 'Display Screen'
-      });
+      };
+      if (description && description.trim()) {
+        payload.description = description.trim();
+      }
+
+      await onCreateWindow(payload);
       onClose();
     } catch (err) {
-      setErrorMessage(err.message || 'Error creating display window');
+      setErrorMessage(err.message || 'Failed to create display window.');
     } finally {
       setSubmitting(false);
     }
@@ -59,7 +64,7 @@ export default function AddWindowModal({ onClose, onCreateWindow, existingWindow
           </div>
 
           <div className="settings-field-group">
-            <label htmlFor="window-desc-input">Description / Location</label>
+            <label htmlFor="window-desc-input">Description / Location (Optional)</label>
             <input
               id="window-desc-input"
               type="text"

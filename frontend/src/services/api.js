@@ -1,7 +1,7 @@
 const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const API_BASE_URL = isLocalDev ? 'http://localhost:8080/api' : `${window.location.origin}/api`;
 
-async function fetchWithRetry(url, options = {}, retries = 6, delayMs = 2000) {
+async function fetchWithRetry(url, options = {}, retries = 3, delayMs = 1000) {
   for (let i = 0; i <= retries; i++) {
     try {
       const response = await fetch(url, options);
@@ -13,7 +13,7 @@ async function fetchWithRetry(url, options = {}, retries = 6, delayMs = 2000) {
       return response;
     } catch (err) {
       if (i === retries) {
-        throw new Error('Server starting up or connection busy. Please retry in a few seconds.');
+        throw new Error('Unable to connect to backend server. Please verify the backend is running.');
       }
       await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
@@ -23,7 +23,8 @@ async function fetchWithRetry(url, options = {}, retries = 6, delayMs = 2000) {
 async function handleResponse(response) {
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `HTTP Error: ${response.status}`);
+    const message = errorData.message || (response.status === 404 ? 'Resource not found' : `HTTP Error: ${response.status}`);
+    throw new Error(message);
   }
   const result = await response.json();
   return result.data;

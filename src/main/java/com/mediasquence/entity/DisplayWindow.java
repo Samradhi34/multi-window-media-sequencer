@@ -37,7 +37,7 @@ public class DisplayWindow implements Serializable {
     @Column(length = 500)
     private String description;
 
-    @OneToMany(mappedBy = "displayWindow", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "displayWindow", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("sequenceOrder ASC")
     private List<PlaylistItem> playlistItems = new ArrayList<>();
 

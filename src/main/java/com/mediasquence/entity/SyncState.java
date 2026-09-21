@@ -30,7 +30,7 @@ public class SyncState implements Serializable {
     @Column(name = "sync_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "active_media_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private MediaItem activeMediaItem;

@@ -12,6 +12,9 @@ import com.mediasquence.repository.MediaItemRepository;
 import com.mediasquence.repository.PlaylistItemRepository;
 import com.mediasquence.service.DisplayWindowService;
 import com.mediasquence.service.SyncService;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,9 +36,9 @@ public class DisplayWindowServiceImpl implements DisplayWindowService {
     private final MediaItemRepository mediaItemRepository;
     private final PlaylistItemRepository playlistItemRepository;
     private final SyncService syncService;
-
-    @jakarta.persistence.PersistenceContext
-    private jakarta.persistence.EntityManager entityManager;
+    
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<DisplayWindow> getAllWindows() {

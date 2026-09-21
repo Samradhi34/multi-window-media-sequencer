@@ -39,7 +39,7 @@ public class PlaylistItem implements Serializable {
     @ToString.Exclude
     private DisplayWindow displayWindow;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "media_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private MediaItem mediaItem;

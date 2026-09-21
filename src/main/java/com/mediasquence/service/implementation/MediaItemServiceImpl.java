@@ -43,6 +43,7 @@ public class MediaItemServiceImpl implements MediaItemService {
 
     @Override
     public MediaItem getMediaItemById(Long id) {
+    	
         if (id == null || id <= 0) {
             log.warn("Invalid media ID passed to getMediaItemById: {}", id);
             throw new IllegalArgumentException("Invalid media ID provided: " + id);
@@ -113,8 +114,8 @@ public class MediaItemServiceImpl implements MediaItemService {
     }
 
     @Override
-    @Transactional
     public void deleteMediaItem(Long id) {
+    	
         MediaItem mediaItem = getMediaItemById(id);
 
         syncStateRepository.deleteByActiveMediaItemId(id);

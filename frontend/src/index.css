@@ -2050,17 +2050,26 @@ input:checked + .toggle-slider:before {
 
 .analytic-icon {
   font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.analytic-info {
+  display: flex;
+  flex-direction: column;
 }
 
 .analytic-val {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-main);
+  display: block;
 }
 
 .analytic-lbl {
   font-size: 0.75rem;
   color: var(--text-sub);
+  display: block;
+  margin-top: 0.3rem;
 }
 
 .analytics-detail-card {

@@ -71,7 +71,6 @@ public class SyncServiceImpl implements SyncService {
     }
 
     @Override
-    @Transactional
     public SyncStatusResponse triggerSync(SyncTriggerRequest request) {
         MediaItem mediaItem = mediaItemRepository.findById(request.getMediaId())
                 .orElseThrow(() -> {
@@ -101,7 +100,6 @@ public class SyncServiceImpl implements SyncService {
     }
 
     @Override
-    @Transactional
     public void cancelSync() {
         SyncState syncState = syncStateRepository.findTopByOrderByIdDesc().orElse(null);
         if (syncState != null && Boolean.TRUE.equals(syncState.getIsActive())) {
@@ -114,7 +112,6 @@ public class SyncServiceImpl implements SyncService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public SyncState getRawSyncState() {
         return syncStateRepository.findTopByOrderByIdDesc().orElse(null);
     }

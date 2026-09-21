@@ -1,13 +1,36 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus = {}, mediaCatalog = [], onDeleteWindow }) {
+const WindowPreviewCard = React.memo(function WindowPreviewCard({
+  windowStatus = {},
+  mediaCatalog = [],
+  settings = {},
+  onDeleteWindow,
+}) {
   const {
     windowName,
     activeMediaItem,
     elapsedSecondsInMedia = 0,
     remainingSecondsInMedia = 0,
-    isSyncActive
+    isSyncActive,
   } = windowStatus || {};
+
+  const {
+    showTitleOverlay = true,
+    enableTransition = true,
+    transitionDuration = '1 second',
+  } = settings || {};
+
+  const getTransitionDurationSeconds = (td) => {
+    if (td === '0.5 second') return '0.5s';
+    if (td === '2 seconds') return '2s';
+    return '1s';
+  };
+
+  const mediaTransitionStyle = {
+    transition: enableTransition
+      ? `opacity ${getTransitionDurationSeconds(transitionDuration)} ease-in-out, transform ${getTransitionDurationSeconds(transitionDuration)} ease-in-out`
+      : 'none',
+  };
 
   const catalogMatch = mediaCatalog.find((m) => String(m.id) === String(activeMediaItem?.id));
   const mediaType = activeMediaItem?.mediaType || catalogMatch?.mediaType || 'BLANK';
@@ -101,9 +124,11 @@ const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus =
         <div className="window-playing-info">
           <span className="live-pulse-dot"></span>
           <span className="window-name-title" title={windowName}>{windowName}</span>
-          <span className="playing-media-tag">
-            ● {activeMediaItem?.title ? activeMediaItem.title.substring(0, 14) : 'Blank'} ({mediaType === 'VIDEO' ? 'Video' : mediaType === 'IMAGE' ? 'Image' : 'Blank'})
-          </span>
+          {showTitleOverlay && (
+            <span className="playing-media-tag">
+              ● {activeMediaItem?.title ? activeMediaItem.title.substring(0, 14) : 'Blank'} ({mediaType === 'VIDEO' ? 'Video' : mediaType === 'IMAGE' ? 'Image' : 'Blank'})
+            </span>
+          )}
         </div>
         <div className="card-header-actions-group">
           {onDeleteWindow && (
@@ -135,14 +160,14 @@ const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus =
       {/* Main Viewport Card */}
       <div className="preview-viewport-box">
         {mediaType === 'VIDEO' && url && !hasError ? (
-          <div className="video-viewport-wrapper">
+          <div className="video-viewport-wrapper" style={mediaTransitionStyle}>
             {embedUrl ? (
               <iframe
                 src={embedUrl}
                 title={title}
                 className="viewport-media-element"
                 allow="autoplay; encrypted-media"
-                style={{ border: 'none' }}
+                style={{ border: 'none', ...mediaTransitionStyle }}
               />
             ) : (
               <video
@@ -161,6 +186,7 @@ const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus =
                   }
                 }}
                 className="viewport-media-element"
+                style={mediaTransitionStyle}
               />
             )}
             <div className="video-play-overlay-btn">
@@ -178,9 +204,10 @@ const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus =
               setHasError(true);
             }}
             className="viewport-media-element"
+            style={mediaTransitionStyle}
           />
         ) : (
-          <div className="blank-viewport-container">
+          <div className="blank-viewport-container" style={mediaTransitionStyle}>
             <div className="blank-card-text">
               <span className="blank-icon-emoji">{mediaType === 'BLANK' ? '⬛' : '📷'}</span>
               <h4>{title}</h4>
@@ -191,10 +218,12 @@ const WindowPreviewCard = React.memo(function WindowPreviewCard({ windowStatus =
 
         {/* Viewport Overlay Info */}
         <div className="viewport-overlay-footer">
-          <div className="viewport-caption">
-            <h5 className="caption-title">{title}</h5>
-            <p className="caption-subtitle">{getMediaSublabel()}</p>
-          </div>
+          {showTitleOverlay && (
+            <div className="viewport-caption">
+              <h5 className="caption-title">{title}</h5>
+              <p className="caption-subtitle">{getMediaSublabel()}</p>
+            </div>
+          )}
 
           {isSyncActive ? (
             <div className="viewport-sync-badge">

@@ -82,7 +82,6 @@ public class DisplayWindowServiceImpl implements DisplayWindowService {
     }
 
     @Override
-    @Transactional
     public void deleteWindow(Long windowId) {
         DisplayWindow window = getWindowById(windowId);
 

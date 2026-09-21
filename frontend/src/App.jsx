@@ -33,6 +33,28 @@ export default function App() {
   // Mobile Sidebar State
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
+  // Per-Window Preferences / Settings Map (Synced to LocalStorage)
+  const [windowSettingsMap, setWindowSettingsMap] = useState(() => {
+    try {
+      const saved = localStorage.getItem('media_sequencer_window_settings');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  const handleUpdateWindowSettings = (windowId, newSettings) => {
+    setWindowSettingsMap((prev) => {
+      const updated = { ...prev, [windowId]: newSettings };
+      try {
+        localStorage.setItem('media_sequencer_window_settings', JSON.stringify(updated));
+      } catch (e) {
+        console.error('Failed to save window settings to localStorage:', e);
+      }
+      return updated;
+    });
+  };
+
   const topSyncRef = useRef(null);
 
   // Helper to append log entry
@@ -306,6 +328,7 @@ export default function App() {
                   <LiveWindowPreview
                     windowStatuses={windowStatuses}
                     mediaCatalog={mediaCatalog}
+                    windowSettingsMap={windowSettingsMap}
                     onOpenAddWindow={handleOpenAddWindowModal}
                     onDeleteWindow={handleDeleteWindowItem}
                   />
@@ -325,6 +348,8 @@ export default function App() {
                     />
                     <WindowSettingsSection
                       windowStatuses={windowStatuses}
+                      windowSettingsMap={windowSettingsMap}
+                      onUpdateWindowSettings={handleUpdateWindowSettings}
                     />
                   </div>
                 </div>
@@ -350,6 +375,7 @@ export default function App() {
               <LiveWindowPreview
                 windowStatuses={windowStatuses}
                 mediaCatalog={mediaCatalog}
+                windowSettingsMap={windowSettingsMap}
                 onOpenAddWindow={handleOpenAddWindowModal}
                 onDeleteWindow={handleDeleteWindowItem}
               />
@@ -432,6 +458,8 @@ export default function App() {
               <div className="settings-view-wrapper" style={{ maxWidth: '600px', margin: '0 auto' }}>
                 <WindowSettingsSection
                   windowStatuses={windowStatuses}
+                  windowSettingsMap={windowSettingsMap}
+                  onUpdateWindowSettings={handleUpdateWindowSettings}
                 />
               </div>
             </div>

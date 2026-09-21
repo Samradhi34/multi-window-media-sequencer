@@ -1,9 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import WindowPreviewCard from './WindowPreviewCard';
 
-export default function LiveWindowPreview({ windowStatuses = [], mediaCatalog = [], onOpenAddWindow, onDeleteWindow }) {
+export default function LiveWindowPreview({
+  windowStatuses = [],
+  mediaCatalog = [],
+  windowSettingsMap = {},
+  onOpenAddWindow,
+  onDeleteWindow,
+}) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const sectionRef = useRef(null);
+
+  const DEFAULT_SETTINGS = {
+    cycleDuration: '5 Hours',
+    autoRepeat: true,
+    showTitleOverlay: true,
+    enableTransition: true,
+    transitionDuration: '1 second',
+  };
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -56,6 +70,7 @@ export default function LiveWindowPreview({ windowStatuses = [], mediaCatalog = 
             key={ws.windowId}
             windowStatus={ws}
             mediaCatalog={mediaCatalog}
+            settings={windowSettingsMap[ws.windowId] || DEFAULT_SETTINGS}
             onDeleteWindow={onDeleteWindow}
           />
         ))}

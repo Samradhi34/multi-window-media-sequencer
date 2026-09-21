@@ -11,8 +11,7 @@ import java.util.List;
 
 @Repository
 public interface PlaylistItemRepository extends JpaRepository<PlaylistItem, Long> {
-    @Query("SELECT p FROM PlaylistItem p JOIN FETCH p.mediaItem WHERE p.displayWindow.id = :windowId ORDER BY p.sequenceOrder ASC")
-    List<PlaylistItem> findByDisplayWindowIdOrderBySequenceOrderAsc(@Param("windowId") Long windowId);
+    List<PlaylistItem> findByDisplayWindowIdOrderBySequenceOrderAsc(Long windowId);
 
     @Modifying
     @Query("DELETE FROM PlaylistItem p WHERE p.displayWindow.id = :windowId AND p.mediaItem.id = :mediaId")

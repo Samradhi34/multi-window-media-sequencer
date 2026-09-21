@@ -1,29 +1,60 @@
 import React, { useState, useEffect } from 'react';
 
-export default function WindowSettingsSection({ windowStatuses = [] }) {
+export default function WindowSettingsSection({
+  windowStatuses = [],
+  windowSettingsMap = {},
+  onUpdateWindowSettings,
+}) {
+  const DEFAULT_SETTINGS = {
+    cycleDuration: '5 Hours',
+    autoRepeat: true,
+    showTitleOverlay: true,
+    enableTransition: true,
+    transitionDuration: '1 second',
+  };
+
   const [selectedWindowId, setSelectedWindowId] = useState('');
-  const [cycleDuration, setCycleDuration] = useState('5 Hours');
-  const [autoRepeat, setAutoRepeat] = useState(true);
-  const [showTitleOverlay, setShowTitleOverlay] = useState(true);
-  const [enableTransition, setEnableTransition] = useState(true);
-  const [transitionDuration, setTransitionDuration] = useState('1 second');
+  const [formSettings, setFormSettings] = useState(DEFAULT_SETTINGS);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
+  // Initialize or update selected window when window list changes
   useEffect(() => {
     if (windowStatuses && windowStatuses.length > 0) {
-      const current = windowStatuses.find((w) => String(w.windowId) === String(selectedWindowId)) || windowStatuses[0];
-      if (current) {
-        setSelectedWindowId(current.windowId);
+      const exists = windowStatuses.some((w) => String(w.windowId) === String(selectedWindowId));
+      if (!exists) {
+        setSelectedWindowId(String(windowStatuses[0].windowId));
       }
     }
   }, [windowStatuses, selectedWindowId]);
 
+  // Sync form state when selected window or windowSettingsMap changes
+  useEffect(() => {
+    if (selectedWindowId) {
+      const current = windowSettingsMap[selectedWindowId] || DEFAULT_SETTINGS;
+      setFormSettings(current);
+    }
+  }, [selectedWindowId, windowSettingsMap]);
+
   const handleWindowChange = (e) => {
-    setSelectedWindowId(e.target.value);
+    const newId = e.target.value;
+    setSelectedWindowId(newId);
+    const current = windowSettingsMap[newId] || DEFAULT_SETTINGS;
+    setFormSettings(current);
+  };
+
+  const updateSettingField = (field, value) => {
+    const updated = { ...formSettings, [field]: value };
+    setFormSettings(updated);
+    if (onUpdateWindowSettings && selectedWindowId) {
+      onUpdateWindowSettings(selectedWindowId, updated);
+    }
   };
 
   const handleSave = (e) => {
     e.preventDefault();
+    if (onUpdateWindowSettings && selectedWindowId) {
+      onUpdateWindowSettings(selectedWindowId, formSettings);
+    }
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);
   };
@@ -63,8 +94,8 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
           <select
             id="cycle-duration"
             className="settings-select"
-            value={cycleDuration}
-            onChange={(e) => setCycleDuration(e.target.value)}
+            value={formSettings.cycleDuration}
+            onChange={(e) => updateSettingField('cycleDuration', e.target.value)}
           >
             <option value="5 Hours">5 Hours</option>
             <option value="1 Hour">1 Hour</option>
@@ -80,8 +111,8 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
           <label className="toggle-switch">
             <input
               type="checkbox"
-              checked={autoRepeat}
-              onChange={(e) => setAutoRepeat(e.target.checked)}
+              checked={formSettings.autoRepeat}
+              onChange={(e) => updateSettingField('autoRepeat', e.target.checked)}
               aria-label="Auto Repeat Playlist"
             />
             <span className="toggle-slider"></span>
@@ -94,8 +125,8 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
           <label className="toggle-switch">
             <input
               type="checkbox"
-              checked={showTitleOverlay}
-              onChange={(e) => setShowTitleOverlay(e.target.checked)}
+              checked={formSettings.showTitleOverlay}
+              onChange={(e) => updateSettingField('showTitleOverlay', e.target.checked)}
               aria-label="Show Media Title Overlay"
             />
             <span className="toggle-slider"></span>
@@ -108,8 +139,8 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
           <label className="toggle-switch">
             <input
               type="checkbox"
-              checked={enableTransition}
-              onChange={(e) => setEnableTransition(e.target.checked)}
+              checked={formSettings.enableTransition}
+              onChange={(e) => updateSettingField('enableTransition', e.target.checked)}
               aria-label="Enable Transition Effect"
             />
             <span className="toggle-slider"></span>
@@ -122,8 +153,8 @@ export default function WindowSettingsSection({ windowStatuses = [] }) {
           <select
             id="transition-duration"
             className="settings-select"
-            value={transitionDuration}
-            onChange={(e) => setTransitionDuration(e.target.value)}
+            value={formSettings.transitionDuration}
+            onChange={(e) => updateSettingField('transitionDuration', e.target.value)}
           >
             <option value="0.5 second">0.5 second</option>
             <option value="1 second">1 second</option>

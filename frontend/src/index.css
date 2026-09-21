@@ -345,6 +345,11 @@ body {
   line-height: 1.1;
 }
 
+.header-user-avatar-badge:hover {
+  border-color: var(--accent-blue);
+  background: #101e38;
+}
+
 .user-name-text {
   font-size: 0.775rem;
   font-weight: 600;
@@ -354,6 +359,19 @@ body {
 .user-role-text {
   font-size: 0.65rem;
   color: var(--text-sub);
+}
+
+.operator-name-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--accent-blue);
+  color: var(--text-main);
+  font-size: 0.775rem;
+  font-weight: 600;
+  outline: none;
+  width: 90px;
+  padding: 0;
+  line-height: 1.2;
 }
 
 /* Dashboard Body Container */
